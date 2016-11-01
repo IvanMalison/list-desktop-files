@@ -173,37 +173,37 @@ AddKorora(){
 #####
 
 less_sys(){
-	find  /usr /etc /opt -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2" -v Trans="$3" -F= '/^create/;{ 
+	find  /usr /etc /opt -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2" -v Trans="$3" -F= '/^create/;{
 		ToLowerTwo=tolower($2);
 		ToLowerFindIt=tolower(FindIt);
 			if(Trans)
 			{
 			split(Trans,ArrayTransLang,",");
 			for(ReLangArray in ArrayTransLang )NewArrTrans[ArrayTransLang[ReLangArray]]=1;
-			}				
+			}
 		if(index($1,"]") == 0)
 			{
 			Var[CountV++]=$1;
 			InString[CountS++]=substr($0,index($0,$2));
-			if(FindIt)if(index(ToLowerTwo,ToLowerFindIt) != 0)YES="1"; 
+			if(FindIt)if(index(ToLowerTwo,ToLowerFindIt) != 0)YES="1";
 			};
 		if(index($1,"[") != 0 && index($1,"[") != 1 ){
-			split($1,Lang,"[");			
-			TmpLang=Lang[2];		
+			split($1,Lang,"[");
+			TmpLang=Lang[2];
 			UniqLang[TmpLang]++;
 			sub("]","",TmpLang);
 			if(Trans)
 			  {
 			  if( NewArrTrans[TmpLang] == 1 )
-			   {   
+			   {
 			  Var[CountV++]=$1;
 			  InString[CountS++]=substr($0,index($0,$2))
-		  	   }			  				
-			  }						 
+		  	   }
+			  }
 			};
 			if(index($1,"[") == 1){
 			Var[CountV++]=$1;
-			InString[CountS++]=$0}			
+			InString[CountS++]=$0}
 			}END{
 		if(YES == "1" )
 			{
@@ -213,23 +213,23 @@ less_sys(){
 				}else{
 				printf "* \033[2;32m" FILENAME "\033[0m\n@ Total translations: "length(UniqLang)": ";
 				}
-			if(length(UniqLang) != 0)for(AllLang in UniqLang){sub("]","",AllLang);printf "%s",AllLang",";}				
+			if(length(UniqLang) != 0)for(AllLang in UniqLang){sub("]","",AllLang);printf "%s",AllLang",";}
 			print " ";
 			for (I in InString)if(index(Var[I],"[") != 1 && length(Var[I]) != 0 && index(Var[I],"#") != 1 )
-				{	
+				{
 						if(index(InString[I]"=",Var[I]"=") != 1 )
 							{
 							print Var[I]"="InString[I]
 							}
 						else
-							{	
+							{
 							print Var[I]"="
-							}			
+							}
 				}
 				else
 				{
-					if(index(Var[I],"[") == 1) 
-						
+					if(index(Var[I],"[") == 1)
+
 						if(CLR == "YES")
 						{
 						printf Var[I]"\n"
@@ -259,12 +259,12 @@ less_sys(){
 								print Var[I]"="InString[I]
 								}
 							else
-								{	
+								{
 								print Var[I]"="
 								}
 						}
 						else
-						{ 
+						{
 							if(index(Var[I],"[") == 1)
 								if(CLR == "YES")
 								{
@@ -276,7 +276,7 @@ less_sys(){
 			}
 			     }'  "{}"  \;
 	}
-	
+
 BaseVarUpdate(){
 
 if [[  ! -f "$LocalArray" ]];then
@@ -288,7 +288,7 @@ if [[  ! -f "$LocalArray" ]];then
 ### command "file" can handle wildcards such as * that is useful when it is multiple or new path with versions number is available
 ### command "grep" is used to separate available from not existing path
 #for FromDDP in "${DefDskPath[@]}";do
-#if [[ ! -z "$FromDDP"  ]];then  
+#if [[ ! -z "$FromDDP"  ]];then
 #	echo "$FromDDP"
 #fi
 #done;
@@ -302,7 +302,7 @@ ADskPath=($(for FromDDP in "${DefDskPath[@]}";
 	do
 if [[ ! -z "$(echo $FromDDP| grep -v -e "^\ " -e ^$ -e ';')" ]];
  then
-	file "$FromDDP" 
+	file "$FromDDP"
 fi
 done |\
 	sort -u |\
@@ -324,7 +324,7 @@ fi
 if [[ "${#ADskPath[@]}" == 0 ]]; then
 
 	ADskPath=($(sed -i -e 's/[0-9][0-9]*/*/g' -e 's/"//g' -e 's/\/$//g' -e 's/ /*/g' "$FilePath";
-	while read FromFile;do echo "$FromFile"  ; 
+	while read FromFile;do echo "$FromFile"  ;
 	done < "$FilePath"|\
 		xargs file|\
 		sort -u |\
@@ -355,7 +355,7 @@ for AddWithVariables in "${BDskPath[@]}"; do
 		ADskPath+=("$AddWithVariables");
 
 	fi
-done 
+done
 ### soring out only unique path in case if $XDG related and $HOME are pointing on a similar destination. || $InDskPath, $ADskPath, NoEmpty
 NoEmpty=($(for InDskPath in "${ADskPath[@]}";do echo "$InDskPath";done|sort -u;));
 }
@@ -364,13 +364,13 @@ NoEmpty=($(for InDskPath in "${ADskPath[@]}";do echo "$InDskPath";done|sort -u;)
 ReCreateDskPath(){
 case "$Opts" in
 	OnlyNew1 )
-DskPath=($(if [[ ! -z $2 ]]; then  
+DskPath=($(if [[ ! -z $2 ]]; then
 	 for StartCmdLine in "$@";
 	 	do
  		if [[ -d "$StartCmdLine" ]]; then
 		  InPath="$StartCmdLine"
  		fi
- 		if [[ "$InPath" == "/" ]];then 
+ 		if [[ "$InPath" == "/" ]];then
   		exit 0
  		fi
 	done
@@ -387,9 +387,9 @@ fi))
 esac
 }
 ########################################
-gdxstdalone(){      		
+gdxstdalone(){
 IFS="
-"	
+"
 	case $2 in
 			g | glob )
 				List_XML=($(find "/usr/" "/etc/" "$HOME/.local/" "$HOME/.config"  -type f -name "*\.xml"));
@@ -398,7 +398,7 @@ IFS="
 				List_XML=($(find  "$HOME/.config" "$HOME/.local/" -type f -name "*\.xml"));
 			;;
 			* )
-				List_XML=($(find "/usr/share/mime/packages/" "/usr/share/mime/application/" "$HOME/.local/share/" -type f -name "*\.xml"));     
+				List_XML=($(find "/usr/share/mime/packages/" "/usr/share/mime/application/" "$HOME/.local/share/" -type f -name "*\.xml"));
 	    		 ;;
 		esac
 
@@ -411,7 +411,7 @@ IFS="
 		if(index($0,"type type=")){
 			ContentArray[$2]=1;
 			}else{
-				if(index($0," type=")){			
+				if(index($0," type=")){
 		ContentArray[$4]=1}}}}END{for (I in ContentArray)print I}'
 	;;
 	1 )
@@ -444,19 +444,19 @@ IFS="
 	 for In_XML_List in "${List_XML[@]}";do
 	find "$In_XML_List" -type f -name "*\.xml" -exec grep "pattern=" "{}" \;
 		done | awk  -v CLR="$DISABLE_COLORS" -F"\"" '{
-			if(index(tolower($0),"pattern="))ContentArray[$2]=1;			
+			if(index(tolower($0),"pattern="))ContentArray[$2]=1;
 			}END{
 				for (I in ContentArray)print I
 				}'
 	;;
 	-gfx)
 	for In_XML_List in "${List_XML[@]}";do
-	find "$In_XML_List" -type f -name "*\.xml" -exec awk  -v CLR="$DISABLE_COLORS" -v ShowItems="$3" '{		
+	find "$In_XML_List" -type f -name "*\.xml" -exec awk  -v CLR="$DISABLE_COLORS" -v ShowItems="$3" '{
 	if(index($0,"<mime-type") != 0)
 		{
-			Astop=1;		
+			Astop=1;
 		MimeTag=$0;
-		NumMtag=split(MimeTag,GetMIMEinTag,"type=\"");	
+		NumMtag=split(MimeTag,GetMIMEinTag,"type=\"");
 	};
 	if(index($0,"</mime-type>") != 0){Astop=2;YES=0;
 ShowMIME="";
@@ -481,62 +481,62 @@ GAcal=0;
 			if(index(SP,"<comment>") != 0)
 				{
 					Acomment=substr(SP,index(SP,"<comment>")+9);
-					Bcomment=substr(Acomment,0,index(Acomment,"</comment>")-1);	
+					Bcomment=substr(Acomment,0,index(Acomment,"</comment>")-1);
 				}
 			else
 				{
 					Acomment=substr(SP,index(SP,"<comment ")+9);
-					TMPcomment=substr(Acomment,0,index(Acomment,"</comment>")-1);		
-					Bcomment=substr(TMPcomment,index(Acomment,">")+1);					
+					TMPcomment=substr(Acomment,0,index(Acomment,"</comment>")-1);
+					Bcomment=substr(TMPcomment,index(Acomment,">")+1);
 				};
 			if(index(SP,"<sub-class-of") != 0)
 				{
 					StartTagSSC=substr(SP,index(SP,"sub-class-of")+12)
 					EndTagSSC=substr(StartTagSSC,0,index(StartTagSSC,">")-2);
 					gsub(/ type=/,"Sub class of: ",EndTagSSC);
-					ShowSubClass=EndTagSSC;				
+					ShowSubClass=EndTagSSC;
 				}
 			if(index(SP,"<generic-icon") != 0)
 				{
 					StartTagGI=substr(SP,index(SP,"generic-icon")+12)
 					EndTagGI=substr(StartTagGI,0,index(StartTagGI,">")-2);
 					gsub(/ name=/,"Icon: ",EndTagGI);
-					ShowGenericIcon=EndTagGI;				
+					ShowGenericIcon=EndTagGI;
 				}
 				if(index(SP,"<acronym>") != 0)
 				{
 					StartTagAcr=substr(SP,index(SP,"<acronym>")+9)
-					EndTagAcr=substr(StartTagAcr,0,index(StartTagAcr,"/")-2);				
-					ShowAcronym=EndTagAcr;				
+					EndTagAcr=substr(StartTagAcr,0,index(StartTagAcr,"/")-2);
+					ShowAcronym=EndTagAcr;
 				}
 				if(index(SP,"<expanded-acronym>") != 0)
 				{
 					StartTagEAcr=substr(SP,index(SP,"<expanded-acronym>")+18)
-					EndTagEAcr=substr(StartTagEAcr,0,index(StartTagEAcr,"/")-2);				
-					ShowEAcronym=EndTagEAcr;				
+					EndTagEAcr=substr(StartTagEAcr,0,index(StartTagEAcr,"/")-2);
+					ShowEAcronym=EndTagEAcr;
 				}
 			if(index(SP,"<alias") != 0)
 				{
 					StartTagAlias=substr(SP,index(SP,"<alias")+6)
 					EndTagAlias=substr(StartTagAlias,0,index(StartTagAlias,">")-2);
 					gsub(/ type=/,"Alias: ",EndTagAlias);
-					ShowAlias=EndTagAlias;				
-				};			
+					ShowAlias=EndTagAlias;
+				};
 				for(I=0; I <= NumPatt;I++)
 			{
 				GetStr=substr(GG[I],0,index(GG[I],"\"/>"));
-				if(index(GetStr,"=") == 1 ){printf substr(GetStr,2);					
+				if(index(GetStr,"=") == 1 ){printf substr(GetStr,2);
 					if(length(Bcomment) == 0){printf " ----- %s",ShowMIME}else{printf " ----- %s",Bcomment};
 					if(length(ShowMIME) == 0 && length(Bcomment) == 0)
 						{
 							AnewMIME=substr(AltFix,index(AltFix,"mime-type")+1);
 							BnewMIME=substr(AnewMIME,0,index(AnewMIME,">")-1);
 							CnewMIME=substr(BnewMIME,index(BnewMIME,"type=\"")+5);
-							printf CnewMIME;		
+							printf CnewMIME;
 						};
-						NumberItems=split(ShowItems,ArrayItems,",");						
+						NumberItems=split(ShowItems,ArrayItems,",");
 						ShowFileName=FILENAME;
-						for( getItem in ArrayItems){	
+						for( getItem in ArrayItems){
 					if(ArrayItems[getItem] == "sf" && ShowFileName ){
 		if(CLR == "YES"){
 			if(CLR == "YES")
@@ -549,7 +549,7 @@ GAcal=0;
 		printf " @* %s",ShowFileName"";ShowFileName="";
 		}
 
-	}	
+	}
 					if(ArrayItems[getItem] == "sm" && ShowMIME )
 	{
 		if(CLR == "YES"){
@@ -591,8 +591,8 @@ GAcal=0;
 		}
 	}
 					if(ArrayItems[getItem] == "sal" && ShowAlias)
-						{							
-							TotalAliases=split(SP,GetAliasStart,"<alias")-1;			
+						{
+							TotalAliases=split(SP,GetAliasStart,"<alias")-1;
 							if(CLR == "YES")
 							{
 							printf " @* Alias:";
@@ -606,13 +606,13 @@ GAcal=0;
 									if(TotalAliases >= 0)for (II in GetAls)
 									 if(index(GetAls[II],"<") <= index(GetAls[II],"/>") )
 									 printf substr(GetAls[II],index(GetAls[II],"=")+1)";";
-									delete GetAls;						
+									delete GetAls;
 							if(CLR != "YES")printf "\033[0m"
 						}
 					}
 				printf "\n";}
 		}
-		SP=1}		
+		SP=1}
 	}' "{}" \;
 	done
 	;;
@@ -635,20 +635,20 @@ GAcal=0;
 			echo 'Missing options! Use first part of MIME-type,e.g. inode'
 			fi
 		;;
-	*) 
+	*)
 	  for In_XML_List in "${List_XML[@]}";do
 		find "$In_XML_List" -type f -name "*\.xml" -print0 | xargs -0 awk  -v CLR="$DISABLE_COLORS" -F"\"" '{YesM=0;
 		if(index($0,"mime-type")){if(index($0,"type type=")){ContentArray[Count++]=$2" == ";YesM=1}else{if(index($0," type=")){
-			ContentArray[Count++]=$4" == "}}}				
+			ContentArray[Count++]=$4" == "}}}
 		if(index($0,"<comment>")){
 			GetString=substr($0,index($0,">")+1)
-			GetTMP=" "substr(GetString,0,index(GetString,"</")-1)" \n";			
+			GetTMP=" "substr(GetString,0,index(GetString,"</")-1)" \n";
 			ContentArray[Count++]=GetTMP;
 			YesC=1
 			};
 		if(index(tolower($0),"pattern="))
 		{
-		ContentArray[Count++]=$2" ;\n";		
+		ContentArray[Count++]=$2" ;\n";
 		}
 			}END{
 			if(CLR == "YES"){
@@ -665,8 +665,8 @@ GAcal=0;
 				printf "%s",ContentArray[GetContent];
 				};
 			};
-				}' ;			
-				done	
+				}' ;
+				done
 		;;
 		esac
 }
@@ -680,10 +680,10 @@ for fdPath in "${DskPath[@]}";do
 fi
 if [[ -d "${DskPath[Count]}" || -f "${DskPath[Count]}"  ]];
 then
-	if [[ "$DISABLE_COLORS" == "YES" ]];then	
+	if [[ "$DISABLE_COLORS" == "YES" ]];then
 		printf "# %s ${fdPath} \n";
 	else
-		printf "#\e[1;36m %s ${fdPath} \e[0m \n";	
+		printf "#\e[1;36m %s ${fdPath} \e[0m \n";
 	fi;
   if [ ! -z "$One" ] && [[ -d "${fdPath}" || -f "${fdPath}" ]] ;
     then
@@ -728,22 +728,22 @@ for fdPath in "${DskPath[@]}";do
 if [[ -d "${DskPath[Count]}" || -f "${DskPath[Count]}"  ]];
  then
 if [[ "$OffPrint" == "no" ]]; then
- 	if [[ "$DISABLE_COLORS" == "YES" ]];then 
+ 	if [[ "$DISABLE_COLORS" == "YES" ]];then
 		printf "# %s ${fdPath} \n";
  	else
 		printf "#\e[1;36m %s ${fdPath} \e[0m \n";
 	fi
 fi
    if [ ! -z "$One" ] && [[ -d "${fdPath}" || -f "${fdPath}" ]] ;
-    then 
+    then
 	case $Opts in
 ### "$var" is used to search for variable names with "grep" in *.desktop
 	var )
-		grep -e ^"$Var" "${AddCmd[@]:2}" -H -E -R --include "*\.desktop" "${fdPath}"  
+		grep -e ^"$Var" "${AddCmd[@]:2}" -H -E -R --include "*\.desktop" "${fdPath}"
 
 		;;
 ### "ddp" is used to raw dump cotent of all *.desktop found in default path. || grep
-	ddp ) 
+	ddp )
 [[ -z "$DESKTOP_FILES" ]] && grep ^ -H -R --include "*\.desktop" "${fdPath}"  ;
 [[ ! -z "$DESKTOP_FILES" ]] &&  find "${fdPath}" $DEP_MAX $DEP_LV  -type f -iname "*\.desktop" -exec cat "{}" \;
 		;;
@@ -763,10 +763,10 @@ fi
 	no-var )
 		find "${fdPath}" $DEP_MAX $DEP_LV  -type f -iname "*\.desktop" -exec grep -H -L -e "$Var" "${AddCmd[@]:2}" "{}" \;
 		;;
-### "dsn" showing only unique section names found in default path. || grep, sed 
+### "dsn" showing only unique section names found in default path. || grep, sed
 	dsn )
 [[ -z "$DESKTOP_FILES" ]] && 	grep '\[*\]'$ -R -h --include "*\.desktop" --include "*\.directory" "${fdPath}" | sed 's/ * //m' |grep ^'\[' |grep -v -e ^'#' -e '\]=' |sort -u
-[[ ! -z "$DESKTOP_FILES" ]] &&  find "${fdPath}" $DEP_MAX $DEP_LV  -type f \( -name "*.desktop" -o -name "*.directory" \) -exec grep '\[*\]'$ "{}" \; | sed 's/ * //m' |grep ^'\[' |grep -v -e ^'#' -e '\]=' |sort -u 
+[[ ! -z "$DESKTOP_FILES" ]] &&  find "${fdPath}" $DEP_MAX $DEP_LV  -type f \( -name "*.desktop" -o -name "*.directory" \) -exec grep '\[*\]'$ "{}" \; | sed 's/ * //m' |grep ^'\[' |grep -v -e ^'#' -e '\]=' |sort -u
 		;;
 	upfd )
 		if [[ ! -z "$2"  ]];then FLang="$2";
@@ -790,10 +790,10 @@ fi
 			for(AllLang in UniqLang){sub("]","",AllLang);
 				printf "%s",AllLang","};print "."
 			};
-		for (ItemNumber in Item)print Item[ItemNumber];			
+		for (ItemNumber in Item)print Item[ItemNumber];
 		}' "{}" \; | grep -v ^"\#"
 		;;
-	description ) 
+	description )
 		find "${fdPath}" -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -F= -v CLR="$DISABLE_COLORS" '{
 			if($2)if($1 == "Name")VName=substr($0,index($0,$2));
 			if($2)if($1 == "Icon")VIcon=substr($0,index($0,$2));
@@ -809,7 +809,7 @@ fi
 				printf "%s", VName " |\033[1;33m "VIcon"\033[0m | "VComment" | \033[1;30m"FILENAME"\033[0m\n"
 				}
 		}' "{}" \; 2> /dev/null
-		;;	
+		;;
 	empty-ctg )
 
 #	find  "${fdPath}" $DEP_MAX $DEP_LV -type f -name "*\.desktop" -exec awk -F= '{if($1 == "Categories")if(length($2) == 0)print FILENAME}' "{}" \;
@@ -819,13 +819,13 @@ fi
 		{
 			if($1)
 			{
-				if($1 == "Categories")			
+				if($1 == "Categories")
 					GetEmptyCtg=$1;
 				if($2 && index(tolower($1),"exec"))
 					GetAllExec[aec++]=$2
 				if($2 && $1 == "Name")
 					GetName=$2
-			} 
+			}
 		}END{
 		if(length(GetAllExec) != 0 && length(GetEmptyCtg) != 0 )
 			{
@@ -838,11 +838,11 @@ fi
 				for(ShowExec in GetAllExec )
 					if(CLR == "YES")
 					{
-						printf GetName"%s", " | " GetAllExec[ShowExec]"\n";		
+						printf GetName"%s", " | " GetAllExec[ShowExec]"\n";
 					}else{
-						printf "\033[1;91m"GetName"\033[0m%s", " | " GetAllExec[ShowExec]"\n";	
+						printf "\033[1;91m"GetName"\033[0m%s", " | " GetAllExec[ShowExec]"\n";
 					}
-					
+
 			 }
 		}' "{}" \;
 	;;
@@ -851,7 +851,7 @@ fi
 
 	;;
 	more )
-		find "${fdPath}" $DEP_MAX $DEP_LV   -type f -name "*\.desktop" -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2"  -F= '/^create/;{ 
+		find "${fdPath}" $DEP_MAX $DEP_LV   -type f -name "*\.desktop" -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2"  -F= '/^create/;{
 		ToLowerOne=tolower($1);
 		ToLowerFindIt=tolower(FindIt);
 		ToLowerTwo=tolower($2);
@@ -877,13 +877,13 @@ fi
 				}else{
 				printf "* \033[2;32m "FILENAME"\033[2;0m \n";
 				};
-	
+
 			for(I in InString)if(length(Var[I]) != 0)print Var[I]"="InString[I]
 			}
 		}'  "{}"  \;|grep -v -e ^"#" -e ^$
 		;;
 	smc )
-		find "${fdPath}" $DEP_MAX $DEP_LV   -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2"  -F= '/^create/;{ 
+		find "${fdPath}" $DEP_MAX $DEP_LV   -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2"  -F= '/^create/;{
 		ToLowerOne=tolower($1);
 		ToLowerFindIt=tolower(FindIt);
 		ToLowerTwo=tolower($2);
@@ -909,13 +909,13 @@ fi
 				}else{
 				printf "* \033[2;32m "FILENAME"\033[2;0m \n";
 				};
-	
+
 			for(I in InString)if(length(Var[I]) != 0)print Var[I]"="InString[I]
 			}
 		}'  "{}"  \;|grep -v -e ^"#" -e ^$
 		;;
 	sce )
-		find "${fdPath}" $DEP_MAX $DEP_LV   -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -v CLR="$DISABLE_COLORS" -v SFName=$3 -v FindIt="$2" -v CLR=$DISABLE_COLORS -F= '/^create/;{ 
+		find "${fdPath}" $DEP_MAX $DEP_LV   -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -v CLR="$DISABLE_COLORS" -v SFName=$3 -v FindIt="$2" -v CLR=$DISABLE_COLORS -F= '/^create/;{
 		ToLowerOne=tolower($1);
 		ToLowerFindIt=tolower(FindIt);
 		ToLowerTwo=tolower($2);
@@ -933,12 +933,12 @@ fi
 				InString[CountS++]=substr($0,index($0,$2));
 				}
 			if(FindIt)if( index($1,"Categories") != 0 )
-				if(index(ToLowerTwo,ToLowerFindIt) != 0 )YES="1"; 
+				if(index(ToLowerTwo,ToLowerFindIt) != 0 )YES="1";
 
 			}
-			
+
 		};
-			
+
 		}END{
 		if(SFName == "sf" || SFName == "filename"){FName=" # "FILENAME}else{FName=""};
 			if(YES == "1" )
@@ -955,7 +955,7 @@ fi
 				};
 			}
 		if(length(FindIt) == 0)
-			{			
+			{
 			for(I in InString)if(length(Var[I]) != 0)
 				if(index(ToLowerOne,"categories") != 0)
 				{
@@ -971,7 +971,7 @@ fi
 		}'  "{}"  \;|grep -v -e ^"#" -e ^$
 		;;
 	#	more )
-#		find "${fdPath}" $DEP_MAX $DEP_LV  -type f -name "*\.desktop" -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2"  -F= '/^create/;{ 
+#		find "${fdPath}" $DEP_MAX $DEP_LV  -type f -name "*\.desktop" -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2"  -F= '/^create/;{
 #	 		  if(index($1,"]") == 0    && index($1,"MimeType") == 0 && index($1,"Keywords") == 0){Var[CountV++]=$1;InString[CountS++]=substr($0,index($0,$2));
 #		if(FindIt)if(index($2,FindIt) != 0 && index($1,"MimeType") == 0 && index($1,"Keywords") == 0)YES="1"; };}END{
 #		if(YES == "1" ){print " "FILENAME;        for(I in InString)if(length(Var[I]) != 0)print Var[I]"="InString[I]};
@@ -979,37 +979,37 @@ fi
 #		;;
 
 	less )
-		find  "${fdPath}" $DEP_MAX $DEP_LV  -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2" -v Trans="$3" -F= '/^create/;{ 
+		find  "${fdPath}" $DEP_MAX $DEP_LV  -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2" -v Trans="$3" -F= '/^create/;{
 		ToLowerTwo=tolower($2);
 		ToLowerFindIt=tolower(FindIt);
 			if(Trans)
 			{
 			split(Trans,ArrayTransLang,",");
 			for(ReLangArray in ArrayTransLang )NewArrTrans[ArrayTransLang[ReLangArray]]=1;
-			}				
+			}
 		if(index($1,"]") == 0)
 			{
 			Var[CountV++]=$1;
 			InString[CountS++]=substr($0,index($0,$2));
-			if(FindIt)if(index(ToLowerTwo,ToLowerFindIt) != 0)YES="1"; 
+			if(FindIt)if(index(ToLowerTwo,ToLowerFindIt) != 0)YES="1";
 			};
 		if(index($1,"[") != 0 && index($1,"[") != 1 ){
-			split($1,Lang,"[");			
-			TmpLang=Lang[2];		
+			split($1,Lang,"[");
+			TmpLang=Lang[2];
 			UniqLang[TmpLang]++;
 			sub("]","",TmpLang);
 			if(Trans)
 			  {
 			  if( NewArrTrans[TmpLang] == 1 )
-			   {   
+			   {
 			  Var[CountV++]=$1;
 			  InString[CountS++]=substr($0,index($0,$2))
-		  	   }			  				
-			  }						 
+		  	   }
+			  }
 			};
 			if(index($1,"[") == 1){
 			Var[CountV++]=$1;
-			InString[CountS++]=$0}			
+			InString[CountS++]=$0}
 			}END{
 		if(YES == "1" )
 			{
@@ -1019,23 +1019,23 @@ fi
 				}else{
 				printf "* \033[2;32m" FILENAME "\033[0m\n@ Total translations: "length(UniqLang)": ";
 				}
-			if(length(UniqLang) != 0)for(AllLang in UniqLang){sub("]","",AllLang);printf "%s",AllLang",";}				
+			if(length(UniqLang) != 0)for(AllLang in UniqLang){sub("]","",AllLang);printf "%s",AllLang",";}
 			print " ";
 			for (I in InString)if(index(Var[I],"[") != 1 && length(Var[I]) != 0 && index(Var[I],"#") != 1 )
-				{	
+				{
 						if(index(InString[I]"=",Var[I]"=") != 1 )
 							{
 							print Var[I]"="InString[I]
 							}
 						else
-							{	
+							{
 							print Var[I]"="
-							}			
+							}
 				}
 				else
 				{
-					if(index(Var[I],"[") == 1) 
-						
+					if(index(Var[I],"[") == 1)
+
 						if(CLR == "YES")
 						{
 						printf Var[I]"\n"
@@ -1065,12 +1065,12 @@ fi
 								print Var[I]"="InString[I]
 								}
 							else
-								{	
+								{
 								print Var[I]"="
 								}
 						}
 						else
-						{ 
+						{
 							if(index(Var[I],"[") == 1)
 								if(CLR == "YES")
 								{
@@ -1083,10 +1083,10 @@ fi
 			     }'  "{}"  \;
 		;;
 	iov )
-		find  "${fdPath}" $DEP_MAX $DEP_LV  -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2" -v Fname="$3" -F= '//{ 
+		find  "${fdPath}" $DEP_MAX $DEP_LV  -type f \( -name "*.desktop" -o -name "*.directory" \) -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2" -v Fname="$3" -F= '//{
 			if(FindIt){
 			SizeArray=split(FindIt,ArrayFindIt,",");
-			if (index($0,"[") == 1 ) 
+			if (index($0,"[") == 1 )
 				YesFoundIt[CountFinds++]=$0;
 			for(CountFindItArray in ArrayFindIt )
 				NewArrFindIt[ArrayFindIt[CountFindItArray]]=1;
@@ -1094,7 +1094,7 @@ fi
 				{
 				YesFoundIt[CountFinds++]=$0;
 				UniqFound[$1]=1;
-				}	
+				}
 			}
 			}END{
 			if( length(UniqFound) == SizeArray )
@@ -1126,7 +1126,7 @@ fi
 		}' "{}" \;
 
 		;;
-		* ) 
+		* )
 		BaseVarUpdate "$@"
 		ReCreateDskPath "$@"
 		ListDefault "$@"
@@ -1155,14 +1155,14 @@ for fdPath in "${DskPath[@]}";do
 if [[ -d "${DskPath[Count]}" || -f "${DskPath[Count]}"  ]];
  then
 	if [[ "$OffPrint" == "no" ]];then
-		if [[ "$DISABLE_COLORS" == "YES" ]];then 
+		if [[ "$DISABLE_COLORS" == "YES" ]];then
 		printf "# %s ${fdPath} \e \n";
 		else
 		printf "#\e[1;36m %s ${fdPath} \e[0m \n";
 		fi
 	fi
    if [ ! -z "$One" ] && [[ -d "${fdPath}" || -f "${fdPath}" ]] ;
-    then 
+    then
 #[[ "$Opts" == "suo" || "$Opts" == "suoe" ]] &&  grep ^ -R -h --include "*\.desktop" "${fdPath}" ;
 
 [[ "$Opts" == "suo" || "$Opts" == "suoe" ]] &&  find "${fdPath}" $DEP_MAX $DEP_LV -type f -name "*\.desktop" -exec cat "{}" \;
@@ -1239,15 +1239,15 @@ fi
 ###################
 # Disabled options
 ###################
-#By using option "all" as 3rd option will show all available translations in a *.desktop file, 
+#By using option "all" as 3rd option will show all available translations in a *.desktop file,
 # without it will show only amount of translations or additional variables with a chosen translation.
 # --uniq-per-file-default (lang) ("all") | --upfd : list variables found in default path
 # --uniq-per-file-sys (lang) ("all")  | --upfs : list variables found in /usr /etc /opt'
 # --uniq-per-file-default | --upfd : show uniq entries per file in default path
-# --uniq-per-file-sys | --upfs : show uniq entries per file found in /usr /etc /opt'		
+# --uniq-per-file-sys | --upfs : show uniq entries per file found in /usr /etc /opt'
 ############################
 # dump	-	dump content of *.desktop files
-#	dump ) 
+#	dump )
 #		echo '
 #	Dump RAW content of *.desktop files to stdout
 # --dump-all | --da : search in  / (may need root rights)
@@ -1272,7 +1272,7 @@ help_def(){
  --more | --m (text)
  	using default path
  --more-sys | --ms (text)
- 	using system path 
+ 	using system path
 
 	List detailed description of content
  --list | --l (text) (translation)
@@ -1280,35 +1280,35 @@ help_def(){
  --list-sys | --ls (text) (translation)
  	using system path /usr /etc /opt
  ___________________________
- 
- --description | --d 
+
+ --description | --d
  	list content of variables by pattern: Name # Icon # Comment # FILENAME'
 	}
 help_debug(){
-	echo '--show-me | --sm (options)		
+	echo '--show-me | --sm (options)
 		without options will show content of script.
 		will search for text string and will show line numbers where it was found
 		other options:
 		 beta - showing options that are not currently in help description'
 	}
 help_var(){
-echo 'Search a value of the variables. 
-	
+echo 'Search a value of the variables.
+
       SUPPORTING grep SYNTAX
  ________________________________
- --var [variable] 
+ --var [variable]
  	using default path
  --var-sys | --vs [variable]
 	using system path /usr /etc /opt
 
-	Show file names that does not contain a string 
+	Show file names that does not contain a string
  --no-var-sys|--nvs [xx]
  	using system path /usr /etc /opt
  --no-var | --nv [text]
  	using default path
  ________________________________
 
-	Show all unique base variable names 
+	Show all unique base variable names
  --show-uniq-def | --sud
  	using default path
  --show-uniq-def-example | --sude
@@ -1319,7 +1319,7 @@ echo 'Search a value of the variables.
 
 	Show RAW output of the unique variables
  --show-uniq-only | --suo
- 	using default path 
+ 	using default path
  --show-uniq-only-example | --suoe
  	using default path
 
@@ -1342,16 +1342,16 @@ echo 'Search section names in .desktop files
 	}
 help_ctg(){
 echo ' --list-categories | --lc
-	Show all categories found in "/usr/share/applications/" and "$HOME/.local/share/applications/" 
+	Show all categories found in "/usr/share/applications/" and "$HOME/.local/share/applications/"
 
  --more-category | --mc [text]
  	output is similar to option --more but searching text only in categories
  --categories-exec | --c [text] (sf)
 	searching only in categories.
-       	showing result by one line per exec found in a single file. 
+       	showing result by one line per exec found in a single file.
 	use "sf" as the last option to show filename
  --empty-categories-exec | --ece
- 	list content of "Exec" variables that doesn'"'"'t belong to a group' 	
+ 	list content of "Exec" variables that doesn'"'"'t belong to a group'
 
 }
 help_config(){
@@ -1367,7 +1367,7 @@ echo 'Configuration
  	show content of /opt/share/ldf/sorted.test
 
  --show-default-directories | --sdd
- 	show internal dirs defined in array DefDskPath 
+ 	show internal dirs defined in array DefDskPath
 
  --remove-local-config
  	removing $HOME/.ldf/sorted.test
@@ -1377,7 +1377,7 @@ echo 'Configuration
      Find path to directories with .desktop files, default is "/"
 
  --find-path | --fp [path1] [path2]
- 	all path with *.desktop files	
+ 	all path with *.desktop files
  --formated-path-output | --fpo  [path1] [path2]
  	replacing numbers and spaces with *
 
@@ -1401,8 +1401,8 @@ echo 'https://specifications.freedesktop.org/desktop-entry-spec/latest/
 	Multiple sources:
 %F %U %D %N
 	Other:
-%k URI/location of desktop file 
-%v name of the device'	
+%k URI/location of desktop file
+%v name of the device'
 	}
 help_usage(){
 echo 'Usage examples
@@ -1411,10 +1411,10 @@ echo 'Usage examples
  Search only for specific text in default output:
 	 lsdesktopf gtk
 	 lsdesktopf game
-	 lsdesktopf --more 
+	 lsdesktopf --more
 	 lsdesktopf --more kde
 	 lsdesktopf --list
-	 lsdesktopf --list gnome 
+	 lsdesktopf --list gnome
 	 lsdesktopf --list gtk zh_CN,zh_TW
 
  Use --var option (supporting grep syntax):
@@ -1424,7 +1424,7 @@ echo 'Usage examples
  Reverse search (supporting grep syntax)
 	--no-var Exec=
 	--no-var-sys "Name\[en_GB\]"
- 
+
  Use --including-only-var option to show content of choosen and optionaly show filename
  	NOTE: filename is an option and not path to existing file.
  	--iov Exec,MimeType filename
@@ -1432,7 +1432,7 @@ echo 'Usage examples
 
  Use --gm option that shows various information about MIME-types in *.desktop files
 	--gm 1
-	--gm 
+	--gm
 	--gm 0
 	--gm -gx video
 	--gm -gx text
@@ -1440,18 +1440,18 @@ echo 'Usage examples
 
  Scan for all *.desktop files in /usr /etc /opt
  has same syntax as without supported options
-	--asc 
+	--asc
 	--asc gtk
-	Use --find-path or --fp 
-	--fp 
+	Use --find-path or --fp
+	--fp
 	--fp /usr /etc
 	export DESKTOP_FILES="$(lsdesktopf --fp / ";")"'
 	}
 help_tips(){
-	echo 'The script is based around commands: "grep", "awk", "find" 
+	echo 'The script is based around commands: "grep", "awk", "find"
 	and a loop: for Line in "${Array[@]}";do ..;done
 	command "rev" is used to reverse text that is useful to show or exclude last column
- to show only specfic column can be used commands such as awk,cut. 
+ to show only specfic column can be used commands such as awk,cut.
 	The "awk" command can use more than one symbol as delimer but "cut" supports only one
 	awk -F"AB" "{print $1}"
 	awk "{print substr($0,0,index($0,"AB")-2) }"
@@ -1472,19 +1472,19 @@ help_tips(){
  	find / -type f 2> /dev/null | grep desktop'
 }
 help_mimetypes(){
-echo 'Show list of mimetypes with associated *.desktop files. 
+echo 'Show list of mimetypes with associated *.desktop files.
  --gen-mimeapps | --gm [options]
 	Output is similar that is used in "mimeapps.list" file under section [Added Associations]
 	Options:
-		0 
+		0
 	       		show only MIME-types
-		1 
-	       		show type of mime. First part of MIME-type 
-		2 
+		1
+	       		show type of mime. First part of MIME-type
+		2
 	       		show extension. Second part of MIME-type
-		3 
+		3
 	       		show only filenames that can open same MIME-type
-		-gx [type of MIME] 
+		-gx [type of MIME]
 	       		shows all extensions in your systems *.desktop files that belongs to type of MIME
 		-gdx [options]
 			shows MIME-types with their descriptions found in *.xml files
@@ -1495,23 +1495,23 @@ echo 'Show list of mimetypes with associated *.desktop files.
 				search in  $HOME/.local $HOME/.config
 		-fm [options]
 			find .desktop files only for comma separated MIME types
- 
+
  --gdx [options]
 	same as --gm -gdx [options]
 	search in *.xml configuration files
 	additional options
-		0 
+		0
 	       		show only MIME-types
-		1 
-	       		show type of mime. First part of MIME-type 
-		2 
+		1
+	       		show type of mime. First part of MIME-type
+		2
 	       		show extension. Second part of MIME-type
-		3 
+		3
 	       		show only filename extenstions
-	 -gfx [options]	
+	 -gfx [options]
 				list available file name extensions with their description found in ".xml" configuration or database files.
 			additional comma separated options:
-				sf 
+				sf
 				 show path to .xml file where was found file name extension.
 				sm
 				 show MIME type
@@ -1526,13 +1526,13 @@ echo 'Show list of mimetypes with associated *.desktop files.
 				sgi
 				 show general icon description
 
- --list-mimeapps | --lm 
+ --list-mimeapps | --lm
  	List available "*mimeapps.list" with colored path and their content
-' 
+'
 }
 
 help_Sessions(){
-	echo ' --sxs	
+	echo ' --sxs
  list numbered content of Exec in .desktop files located at /usr/share/xsessions/
  additional options:
 	n
@@ -1554,7 +1554,7 @@ help_Sessions(){
 help_env(){
 echo 'Environment variables
 NO_COLORS 	- if value is YES then no colors will be used
-DESKTOP_FILES 	- must contain path to folders with 
+DESKTOP_FILES 	- must contain path to folders with
 		  desktop files separated with ";"
 		  overriding default preset path'
 
@@ -1562,11 +1562,11 @@ DESKTOP_FILES 	- must contain path to folders with
 
 help_sinfile(){
 echo '--in-file | --if [text] [language]
-		output is similar to option "--list" 
+		output is similar to option "--list"
 		by default showing base content of a .desktop with a list of available translations
 		searching for the "text" in both - variable name and content
 		 showing only lines where the text was found but ignoring translated
-		if language is choosen then it will show all available translation'	
+		if language is choosen then it will show all available translation'
 }
 
 case "$1" in
@@ -1576,9 +1576,9 @@ case "$1" in
 	echo ' all	-	show all help sections
  def	-	options that are using default output
  var	-	list available variables or search a value
- sec	-	list available sections 
- usage	-	show usage of commands	
- config	-	configuration  
+ sec	-	list available sections
+ usage	-	show usage of commands
+ config	-	configuration
  debug	-	view or search in content of this script
  info	-	show short info about *.desktop specified Exec
  tips	-	show some tips about commands used in this script
@@ -1591,32 +1591,32 @@ case "$1" in
 		case "$2" in
 	sinf )
 		help_sinfile
-		;;	
+		;;
 	mime )
 		help_mimetypes
 		;;
 	def )
 		help_def
 		;;
-	debug ) 
+	debug )
 		help_debug
 		;;
 	var )
 		help_var
 		;;
-	sec ) 
+	sec )
 		help_sec
 		;;
-	config ) 
+	config )
 		help_config
 		 ;;
-	info ) 
-		help_info	
+	info )
+		help_info
 		;;
 	ctg )
 		help_ctg
 		;;
-	usage ) 
+	usage )
 		help_usage
 		;;
 	tips )
@@ -1649,22 +1649,22 @@ case "$1" in
 	BaseVarUpdate "$@"
 	ReCreateDskPath "$@"
 
-	if [[  ! -z "$2"    ]];then  
+	if [[  ! -z "$2"    ]];then
 		Var="$2"
- 	if [[ "$#" -gt 2  ]];then 
+ 	if [[ "$#" -gt 2  ]];then
 	AddCmd=($@);
 #	Additional="${AddCmd[@]:2}"  ;
  	fi;
 		Opts="var"
-	echo "${AddCmd[@]:2}"	
+	echo "${AddCmd[@]:2}"
 		SearchContentOfVariable "$@"
 	else
 		echo "Error, parameter to --var is missing
 	example: --var MimeType"
- 	fi	 	
+ 	fi
  	;;
 #--uniq-per-file-default | --upfd )
-#	Opts="upfd"	
+#	Opts="upfd"
 # 	ReCreateDskPath "$@"
 #	SearchContentOfVariable "$@"
 #	;;
@@ -1678,9 +1678,9 @@ case "$1" in
 #		printf "  %s",FILENAME"\n";
 #		print " ** Total translations: "length(UniqLang);
 #		if(ShowAvailableLanguages)if(ShowAvailableLanguages == "all")if(length(UniqLang) != 0 ){
-#			for(AllLang in UniqLang){sub("]","",AllLang);printf "%s",AllLang","};print "."	
+#			for(AllLang in UniqLang){sub("]","",AllLang);printf "%s",AllLang","};print "."
 #			};
-#		for (ItemNumber in Item)print Item[ItemNumber];			
+#		for (ItemNumber in Item)print Item[ItemNumber];
 #		}' "{}" \; | grep -v ^"\#"
 #		;;
 --more | --m )
@@ -1703,7 +1703,7 @@ case "$1" in
         SearchContentOfVariable "$@"
 	;;
 --more-sys | --ms )
-	find /usr /etc /opt -type f -name "*\.desktop" -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2"  -F= '/^create/;{ 
+	find /usr /etc /opt -type f -name "*\.desktop" -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2"  -F= '/^create/;{
 		if(index($1,"]") == 0)
 			{
 			Var[CountV++]=$1;
@@ -1715,7 +1715,7 @@ case "$1" in
 				if(CLR == "YES"){
 				printf "* "FILENAME" \n";
 				}else{
-				printf "* \033[2;32m"FILENAME" \033[2;0m\n";				
+				printf "* \033[2;32m"FILENAME" \033[2;0m\n";
 				}
 			for (I in InString)print Var[I]"="InString[I]}
 			};
@@ -1749,7 +1749,7 @@ case "$1" in
 		Example: --iovs Exec,Type filename'
 		exit 1
 	fi
-	find  /usr /etc /opt -type f -name "*\.desktop" -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2" -v Fname="$3" -F= '//{ 
+	find  /usr /etc /opt -type f -name "*\.desktop" -exec awk  -v CLR="$DISABLE_COLORS" -v FindIt="$2" -v Fname="$3" -F= '//{
 		if(FindIt){
 		SizeArray=split(FindIt,ArrayFindIt,",");
 		if (index($0,"[") == 1 ) YesFoundIt[CountFinds++]=$0;
@@ -1758,7 +1758,7 @@ case "$1" in
 				{
 				YesFoundIt[CountFinds++]=$0;
 				UniqFound[$1]=1;
-				}	
+				}
 		}}END{
 		if( length(UniqFound) == SizeArray )
 		{	if(Fname == "filename")
@@ -1774,7 +1774,7 @@ case "$1" in
 			};
 		}
 	}' "{}" \;
-	;;	
+	;;
 --list | --less | --l )
 	BaseVarUpdate "$@"
 
@@ -1791,22 +1791,22 @@ case "$1" in
 
 	ReCreateDskPath "$@"
 
-	if [[  ! -z "$2"    ]];then  
+	if [[  ! -z "$2"    ]];then
 		Var="$2"
 		Opts="no-var"
 		SearchContentOfVariable "$@"
 	else
 		echo "Error, parameter to --no-var is missing
 	example: --no-var MimeType"
- 	fi	 	
+ 	fi
  	;;
 --var-sys | --vs)
 	BaseVarUpdate "$@"
 
 #	ReCreateDskPath
-	if [[  ! -z "$2"    ]];then  
+	if [[  ! -z "$2"    ]];then
 	Var="$2"
-# 	if [[ "$#" -gt 2  ]];then 
+# 	if [[ "$#" -gt 2  ]];then
 #	Additional="${AddCmd[@]:2}"  ;
 # 	 fi;
 	Opts="var-sys"
@@ -1814,7 +1814,7 @@ case "$1" in
 	else
 		echo "Error, parameter to --var-sys is missing
 	example: --var-sys MimeType"
- 	fi	
+ 	fi
 	;;
 --no-var-sys | --nvs )
 
@@ -1824,7 +1824,7 @@ case "$1" in
 		echo 'No options are given.'
 	fi
 	;;
-#--dump-all | --da ) 
+#--dump-all | --da )
 #	grep -i ^ -H -R --include \*.desktop "/"
 #	;;
 #--dump-sys-path | --dsp )
@@ -1869,25 +1869,25 @@ case "$1" in
 	;;
 --find-path | --fp )
 	BaseVarUpdate "$@"
-	if [[ ! -z "$2" ]]; then  
+	if [[ ! -z "$2" ]]; then
 	for (( Ipath=2; Ipath <= ${#@};Ipath++ )) ;do
 	GetPathList="${@:Ipath:1}"
 	if [[ -d "$GetPathList" ]]; then
 		InPath="$GetPathList"
 	fi
-	find "$InPath" -type f \( -name "*.desktop" -o -name "*.directory" \) -exec dirname "{}" \; 2> /dev/null | sort -u 
-	 if [[ "$InPath" == "/" ]];then 
+	find "$InPath" -type f \( -name "*.desktop" -o -name "*.directory" \) -exec dirname "{}" \; 2> /dev/null | sort -u
+	 if [[ "$InPath" == "/" ]];then
 	  	exit 0
  		fi
 	done
 	else
-		find / -type f \( -name "*.desktop" -o -name "*.directory" \) -exec dirname "{}" \; 2> /dev/null | sort -u 
+		find / -type f \( -name "*.desktop" -o -name "*.directory" \) -exec dirname "{}" \; 2> /dev/null | sort -u
 
 	fi
 	;;
 --find-path-exec | --fpe)
 	BaseVarUpdate "$@"
-	if [[ ! -z "$2" ]]; then  
+	if [[ ! -z "$2" ]]; then
 	for (( Ipath=2; Ipath <= ${#@};Ipath++ )) ;do
 	GetPathList="${@:Ipath:1}"
 	if [[ -d "$GetPathList" ]]; then
@@ -1902,7 +1902,7 @@ case "$1" in
 		printf "\n"  ;
 		delete SArr ;
 		}' | sort -u
-	 if [[ "$InPath" == "/" ]];then 
+	 if [[ "$InPath" == "/" ]];then
 	  	exit 0
  		fi
 	done
@@ -1915,12 +1915,12 @@ case "$1" in
 		 printf  "/"SArr[InArr] ;
 		printf "\n"  ;
 		delete SArr ;
-		}' | sort -u 
+		}' | sort -u
 	fi
 	;;
 --formated-path-output-exec | --fpoe )
 	BaseVarUpdate "$@"
-	if [[ "${#@}" -ge 2 ]]; then  
+	if [[ "${#@}" -ge 2 ]]; then
 	for (( Ipath=2; Ipath <= ${#@};Ipath++ )) ;do
 	GetPathList="${@:Ipath:1}"
 	if [[ -d "$GetPathList" ]]; then
@@ -1936,7 +1936,7 @@ case "$1" in
 		delete SArr ;
 		}' |\
 	       	sed -e 's/[0-9][0-9]*/*/g' -e 's/"//g' -e 's/\/$//g' -e 's/ /*/g' -e 's/[0-9]\.[0-9]*/*/g'  -e 's/\.\*/*/g' -e 's/**\*/*/g' |\
-	       	sort -u 
+	       	sort -u
 	done
 	else
 		find "$InPath" -type f \( -name "*.desktop" -o -name "*.directory" \)  -exec grep -H ^Exec "{}" \; 2> /dev/null | awk -F: '
@@ -1949,14 +1949,14 @@ case "$1" in
 		delete SArr ;
 		}' |\
 		      	sed -e 's/[0-9][0-9]*/*/g' -e 's/"//g' -e 's/\/$//g' -e 's/ /*/g' -e 's/[0-9]\.[0-9]*/*/g' -e 's/\.\*/*/g' -e 's/\*\**/*/g' |\
-			sort -u 
+			sort -u
 	fi
 
 	;;
 
 --formated-path-output | --fpo )
 	BaseVarUpdate "$@"
-	if [[ ! -z "$2" ]]; then  
+	if [[ ! -z "$2" ]]; then
 	for (( Ipath=2; Ipath <= ${#@};Ipath++ )) ;do
 	GetPathList="${@:Ipath:1}"
 	if [[ -d "$GetPathList" ]]; then
@@ -1964,16 +1964,16 @@ case "$1" in
 	fi
 	find "$InPath" -type f \( -name "*.desktop" -o -name "*.directory" \) -exec dirname "{}" \; 2> /dev/null |\
 	       	sed -e 's/[0-9][0-9]*/*/g' -e 's/"//g' -e 's/\/$//g' -e 's/ /*/g' -e 's/[0-9]\.[0-9]*/*/g'  -e 's/\.\*/*/g' -e 's/**\*/*/g' |\
-	       	sort -u 
+	       	sort -u
 	       	#| sed "s/$/$3/g"
-	 if [[ "$InPath" == "/" ]];then 
+	 if [[ "$InPath" == "/" ]];then
 	  	exit 0
  		fi
 	done
 	else
 		find / -type f \( -name "*.desktop" -o -name "*.directory" \) -exec dirname "{}" \; 2> /dev/null |\
 		      	sed -e 's/[0-9][0-9]*/*/g' -e 's/"//g' -e 's/\/$//g' -e 's/ /*/g' -e 's/[0-9]\.[0-9]*/*/g' -e 's/\.\*/*/g' -e 's/\*\**/*/g' |\
-			sort -u 
+			sort -u
 			#| sed "s/$/$3/g"
 	fi
 	;;
@@ -1988,7 +1988,7 @@ case "$1" in
 	find / -type f -name "*\.desktop" -exec dirname "{}" \; | sort -u > "$LocalArray"
 	;;
 #--update-path-file | --upf)
-#	if [[ "$UID" != 0 ]];then  
+#	if [[ "$UID" != 0 ]];then
 #		echo 'You must start it as user root'
 #		exit 1
 #	else
@@ -2010,7 +2010,7 @@ case "$1" in
 
 --format-path-file | --fpf )
 	BaseVarUpdate "$@"
-	if [[ ! -z "$2" ]];then 
+	if [[ ! -z "$2" ]];then
 	 if [[ -f "$2" ]];then
 	  if [[ $(grep -c -v ^/  "$2" ) != "0" ]];then
 	   echo 'The file should contain only full path per line. ( all should begin with / )'
@@ -2019,13 +2019,13 @@ case "$1" in
 	   sort -u -o "$2" "$2"
 	  fi
 	 else
-	  echo 'Path to file is missing!'	 
-	 fi 
+	  echo 'Path to file is missing!'
+	 fi
 	fi
 	;;
 --create-global-list | --cgl)
 	BaseVarUpdate "$@"
-	if [[ "$UID" != 0 ]];then  
+	if [[ "$UID" != 0 ]];then
 		echo 'You must start it as user root'
 		exit 1
 	else
@@ -2054,10 +2054,10 @@ case "$1" in
 		echo "$SDD"
 	done
 	;;
---remove-local-config) 
+--remove-local-config)
 	rm -i "$HOME/.ldf/sorted.test"
 	;;
---remove-global-config) 
+--remove-global-config)
 	if [[ "$UID" -eq "0" ]];then
 		rm -i "/opt/share/ldf/sorted.test"
 	else
@@ -2089,7 +2089,7 @@ case "$1" in
 	ReCreateDskPath "$@"
 
 	SearchContentOfVariable
-	;;	
+	;;
 --generate-mimeapps.list | --gen-mimeapps | --gm )
 	BaseVarUpdate "$@"
 
@@ -2106,7 +2106,7 @@ fi
 IFS="
 "
 MimePathArray+=("$(
-find "/usr/local/share/applications" "/usr/share/applications" "$PName" -type f -name "*\.desktop" -exec dirname "{}" \; | 
+find "/usr/local/share/applications" "/usr/share/applications" "$PName" -type f -name "*\.desktop" -exec dirname "{}" \; |
 sort -u |
 sed "s/$/\/\*.desktop/" )")
 
@@ -2122,23 +2122,23 @@ IFS="
 				List_XML=($(find  "$HOME/.config" "$HOME/.local/" -type f -name "*\.xml"));
 			;;
 			* )
-				List_XML=($(find "/usr/share/mime/packages/" "/usr/share/mime/application/" "$HOME/.local/share/" -type f -name "*\.xml"));     
+				List_XML=($(find "/usr/share/mime/packages/" "/usr/share/mime/application/" "$HOME/.local/share/" -type f -name "*\.xml"));
 	    		 ;;
 		esac
  for In_XML_List in "${List_XML[@]}";do
 find "$In_XML_List" -type f -name "*\.xml" -print0 | xargs -0 awk  -v CLR="$DISABLE_COLORS" -F"\"" '{YesM=0;
 	if(index($0,"mime-type")){if(index($0,"type type=")){ContentArray[Count++]=$2" == ";YesM=1}else{if(index($0," type=")){
-		ContentArray[Count++]=$4" == "}}}		
-		
+		ContentArray[Count++]=$4" == "}}}
+
 	if(index($0,"<comment>")){
 		GetString=substr($0,index($0,">")+1)
-		GetTMP=" "substr(GetString,0,index(GetString,"</")-1)" \n";			
+		GetTMP=" "substr(GetString,0,index(GetString,"</")-1)" \n";
 		ContentArray[Count++]=GetTMP;
 		YesC=1
 		};
 	if(index(tolower($0),"pattern="))
 	{
-	ContentArray[Count++]=$2" ;\n";		
+	ContentArray[Count++]=$2" ;\n";
 	}
 		}END{
 		if(CLR == "YES")
@@ -2158,13 +2158,13 @@ find "$In_XML_List" -type f -name "*\.xml" -print0 | xargs -0 awk  -v CLR="$DISA
 		};
 			}' ;
 
-			
+
 		done
 	;;
 	-fm)
-	if [[ ! -z "$3" ]];then	
+	if [[ ! -z "$3" ]];then
 		for inMime in "${MimePathArray[@]}" ;do
-	[[ ! -d "$inMime" ]] && awk  -v CLR="$DISABLE_COLORS" -F= -v MimeToList="$3"  '//{	
+	[[ ! -d "$inMime" ]] && awk  -v CLR="$DISABLE_COLORS" -F= -v MimeToList="$3"  '//{
   if($1 == "MimeType"){SizeArr=split($2,MimeArray,";");
 	for (inArray in MimeArray)
 		if(MimeArray[inArray])
@@ -2184,8 +2184,8 @@ find "$In_XML_List" -type f -name "*\.xml" -print0 | xargs -0 awk  -v CLR="$DISA
 				UniqMimeArray[inMA]=FName;
 				NameCollect[FName]=inMA
 					}
-			};	
-	
+			};
+
 		}
 	}END{
 		if(length(MimeToList) != 0)
@@ -2202,7 +2202,7 @@ find "$In_XML_List" -type f -name "*\.xml" -print0 | xargs -0 awk  -v CLR="$DISA
 			done | sort --field-separator=\= --key=1,1
 		else
 			echo "List of comma separated MIME types is missing.";
-		fi;	
+		fi;
 
 	;;
 		* )
@@ -2265,16 +2265,16 @@ find "$In_XML_List" -type f -name "*\.xml" -print0 | xargs -0 awk  -v CLR="$DISA
 						{
 							print GetMIME
 						;
-						};										
+						};
 				};
 				if(MimeParts == "-gx" || MimeParts == "-g" || MimeParts == "-getext")
 				if( length(MimeExt) != 0 )
 					{
 					for(GetMIME in UniqMimeArray)
-						{GetType=substr(GetMIME,0,index(GetMIME,"/")-1)							
+						{GetType=substr(GetMIME,0,index(GetMIME,"/")-1)
 							if(MimeExt == GetType )print substr(GetMIME,index(GetMIME,"/")+1)
 						;
-						};										
+						};
 					}
 				else
 					{print "No option are given. Use first part of MIME-type!"};
@@ -2310,7 +2310,7 @@ find "$In_XML_List" -type f -name "*\.xml" -print0 | xargs -0 awk  -v CLR="$DISA
 					};
 				};
 			if(index(FILENAME,".xml")-1 == GetListName )
-				{			
+				{
 					if(index($0,"<comment>") != 0)
 					{
 							C=substr($0,0,index($0,"/")-2);
@@ -2326,18 +2326,18 @@ find "$In_XML_List" -type f -name "*\.xml" -print0 | xargs -0 awk  -v CLR="$DISA
 				};
 			}END{if(length(YesFN) != 0)print "* "YesFN ;for(GetList in GetContentList )print GetContentList[GetList];
 		}' ;
-		
+
 		done;
 
 	else
 
 		for In_List in "${List_Dirs[@]}";do
 
-		[[ -d  "${In_List}"  ]]	&&	find "${In_List}" -type f  \( -name "*mimeapps.list" -o -name "defaults.list" \) -exec awk  -v CLR="$DISABLE_COLORS"  '{ 
-		       	CollectMIMEContent[count++]=$0 
+		[[ -d  "${In_List}"  ]]	&&	find "${In_List}" -type f  \( -name "*mimeapps.list" -o -name "defaults.list" \) -exec awk  -v CLR="$DISABLE_COLORS"  '{
+		       	CollectMIMEContent[count++]=$0
 			}END{
 				if(CLR == "YES")
-				{	
+				{
 				printf "#  "FILENAME "\n";
 				}else{
 				printf "# \033[1;36m "FILENAME "\033[0m \n";
@@ -2361,7 +2361,7 @@ done | awk  -v CLR="$DISABLE_COLORS" -F= '//{A[$2]=1}END{for(E in A)ZZ=ZZ E;spli
 --gdx | --get-description-xdg )
 	gdxstdalone "$@"
 	;;
---sxs | --show-x-sessions )	
+--sxs | --show-x-sessions )
 	StartIt=0;
 	ToShowPart="$2";
 	ShowOrStartXsession "$@"
@@ -2373,8 +2373,8 @@ done | awk  -v CLR="$DISABLE_COLORS" -F= '//{A[$2]=1}END{for(E in A)ZZ=ZZ E;spli
 	;;
 --in-file | --if )
 	if [[ ! -z "$2" && -e "$2" && -f "$2" ]];
-	then 
-		awk  -v CLR="$DISABLE_COLORS" -v FindIt="$3" -v Trans="$4" -F= '/^create/;{ 
+	then
+		awk  -v CLR="$DISABLE_COLORS" -v FindIt="$3" -v Trans="$4" -F= '/^create/;{
 		ToLowerTwo=tolower($2);
 		ToLowerOne=tolower($1);
 		ToLowerFindIt=tolower(FindIt);
@@ -2382,7 +2382,7 @@ done | awk  -v CLR="$DISABLE_COLORS" -F= '//{A[$2]=1}END{for(E in A)ZZ=ZZ E;spli
 			{
 			split(Trans,ArrayTransLang,",");
 			for(ReLangArray in ArrayTransLang )NewArrTrans[ArrayTransLang[ReLangArray]]=1;
-			}				
+			}
 		if(index($1,"]") == 0)
 			{
 			Var[CountV++]=$1;
@@ -2396,14 +2396,14 @@ done | awk  -v CLR="$DISABLE_COLORS" -F= '//{A[$2]=1}END{for(E in A)ZZ=ZZ E;spli
 				if(FindIt && length($2) != 0)if(index(ToLowerOne,ToLowerFindIt) != 0){YES="1";GotItAll[Cgot++]=$0 }
 			};
 		if(index($1,"[") != 0 && index($1,"[") != 1 ){
-			split($1,Lang,"[");			
-			TmpLang=Lang[2];		
+			split($1,Lang,"[");
+			TmpLang=Lang[2];
 			UniqLang[TmpLang]++;
 			sub("]","",TmpLang);
 			if(Trans)
 			  {
 			  if( NewArrTrans[TmpLang] == 1 )
-			   {   
+			   {
 			  Var[CountV++]=$1;
 			  if(length($2) != 0)
 				  {
@@ -2411,12 +2411,12 @@ done | awk  -v CLR="$DISABLE_COLORS" -F= '//{A[$2]=1}END{for(E in A)ZZ=ZZ E;spli
 			  	  }else{
 				  InString[CountS++]="";
 			   	  }
-		  	   }			  				
-			  }						 
+		  	   }
+			  }
 			};
 			if(index($1,"[") == 1){
 			Var[CountV++]=$1;
-			InString[CountS++]=$0}			
+			InString[CountS++]=$0}
 			}END{
 		if(YES == "1" )
 			{
@@ -2452,12 +2452,12 @@ done | awk  -v CLR="$DISABLE_COLORS" -F= '//{A[$2]=1}END{for(E in A)ZZ=ZZ E;spli
 								print Var[I]"="InString[I]
 								}
 							else
-								{	
+								{
 								print Var[I]"="
 								}
 						}
 						else
-						{ 
+						{
 							if(index(Var[I],"[") == 1)
 								if(CLR == "YES")
 								{
@@ -2539,8 +2539,8 @@ Version'
 	ReCreateDskPath "$@"
         SearchContentOfVariable "$@"
 	;;
- 
- * ) 
+
+ * )
 	BaseVarUpdate "$@"
 	ReCreateDskPath "$@"
 	ListDefault "$@"
